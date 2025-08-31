@@ -12,16 +12,18 @@ class testing_UI:
     """function for loading csv data and making it into a hash map"""
     try: 
       if self.uploaded_file is None:
-                st.error("No CSV data loaded")
-                return False
+        st.error("No CSV data loaded")
+        return False
       else:
         self.df = pd.read_csv(uploaded_file)
         self.df_map = {}  # Clear previous data
         for col in self.df.columns:
           self.df_map[col] = self.df[col]
+        return self.df_map
           
     except Exception as e:
       st.error(f"Failed to load CSV: {str(e)}")
+      return False
     
   def UI_display(self):
     """UI Display for loading csv and displaying data"""
@@ -38,8 +40,8 @@ class testing_UI:
         st.dataframe(self.df)
 
 def main():
-    app = testing_UI()
-    app.UI_display()
+  app = testing_UI()
+  app.UI_display()
 
 if __name__ == "__main__":
-    main()
+  main()
