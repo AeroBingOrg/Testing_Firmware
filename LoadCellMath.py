@@ -1,4 +1,4 @@
-import pandas as df
+import pandas as pd
 import numpy as np
 import math
 
@@ -18,6 +18,7 @@ class Load_cell_math:
 
     indices_above_20N = thrust_N > self.upperthrust
     indices_below_20N = thrust_N < self.lowerthrust
+    indices_above_20N_fixed = []
 
     IAL = len(indices_above_20N)
     IBL = len(indices_below_20N)
@@ -34,5 +35,8 @@ class Load_cell_math:
       if not iThrustData[i-1] == None:
         if abs(iThrustData[i-1] - k) > 1000:
           iThrustData.remove(k)
-
       
+      iAvg = sum(iThrustData)/len(iThrustData)
+
+      if iAvg > 20:
+        indices_above_20N_fixed.append(indices_above_20N(i))
