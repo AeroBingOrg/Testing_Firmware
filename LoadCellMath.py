@@ -11,6 +11,7 @@ class Load_cell_math:
     self.upperthrust = upperthrust
     self.maxthrust_precent = maxthrust_precent
     self.spacing = spacing
+    
   def calculations(self):
     # Load CSV data file
     filepath = filedialog.askopenfilename(

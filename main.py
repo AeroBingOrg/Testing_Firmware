@@ -2,7 +2,8 @@ from LoadCellMath import Load_cell_math
 from LoadCellGraph import testing_UI
 import tkinter as tk
 from tkinter import messagebox
-
+import os
+  
 def main():
   # Create main window
   root = tk.Tk()
