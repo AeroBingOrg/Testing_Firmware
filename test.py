@@ -38,11 +38,13 @@ def main():
       'spacing': spacing.get()
       }
 
-    try: #this is the reason it's breaking
-      math = Load_cell_math(values['lowerthrust'], values["upperthrust"], values["maxthrust_precent"], values["spacing"])
+    try: #this is the reason it's breaking, accessing the columns is crashing the ui 
+      '''math = Load_cell_math(values['lowerthrust'], values["upperthrust"], values["maxthrust_precent"], values["spacing"])
       filtered_pressure_above_20N, filtered_thrust_above_20N, filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N = math.calculations()
       testing_UI.plots(filtered_pressure_above_20N, filtered_thrust_above_20N, 
-                       filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N)
+                       filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N)'''
+      
+      
             
     except:
       messagebox.showerror("Error","Failed Calculations & Graphing")
