@@ -36,13 +36,37 @@ def main():
       'upperthrust': upperthrust.get(),
       'maxthrust_precent': maxthrust_precent.get(),
       'spacing': spacing.get()
-      }
+    }
+
+    try:
+      print(Load_cell_math(values["lowerthrust"]))
+    except: 
+      print("lowerthrust fail")
+
+    try:
+      print(Load_cell_math(values["upperthrust"]))
+    except: 
+      print("upperthrust fail")
+
+    try:
+      print(Load_cell_math(values["maxthrust_precent"]))
+    except: 
+      print("maxthrust_precent fail")
+
+    try:
+      print(Load_cell_math(values["spacing"]))
+    except: 
+      print("spacing fail")
+
 
     try:
       math = Load_cell_math(values['lowerthrust'], values["upperthrust"], values["maxthrust_precent"], values["spacing"])
+
       filtered_pressure_above_20N, filtered_thrust_above_20N, filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N = math.calculations()
+
       testing_UI.plots(filtered_pressure_above_20N, filtered_thrust_above_20N, 
                        filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N)
+
             
     except:
       messagebox.showerror("Error","Failed Calculations & Graphing")
