@@ -9,11 +9,11 @@ import os
 class Window(QWidget):
     
     def __init__(self):
+        #Make base window
         super().__init__()
-        self.resize(300,250)
-        self.setWindowTitle("Enter values")
+        self.resize(500,450)
 
-        layout = QVBoxLayout()
+        '''layout = QVBoxLayout()
         self.setLayout(layout)
  
         self.input = QLineEdit()
@@ -26,16 +26,46 @@ class Window(QWidget):
 
         button = QPushButton("Done")
         button.clicked.connect(self.input.clear)
-        layout.addWidget(button)
+        layout.addWidget(button) '''
 
     def get(self):
         text = self.input.text()
         print(text)
 
+def inputWindow1(window):
+    imported = False
+    window.setWindowTitle("Import values")
+    layout = QVBoxLayout()
+    window.setLayout(layout)
+    while imported:
+        for i in range(0,4):
+            window.input = QLineEdit()
+            window.input.setFixedWidth(150)
+            layout.addWidget(window.input, alignment= Qt.AlignmentFlag.AlignCenter)
+
+        button = QPushButton("Done")
+        button.clicked.connect(imported = True)
+        layout.addWidget(button)
+
+def inputWindow2(window):
+    window.setWindowTitle("Import values")
+    layout = QVBoxLayout()
+    window.setLayout(layout)
+    while True:
+        for i in range(0,4):
+            window.input = QLineEdit()
+            window.input.setFixedWidth(150)
+            layout.addWidget(window.input, alignment= Qt.AlignmentFlag.AlignCenter)
+
+        button = QPushButton("Done")
+        button.clicked.connect(window.get)
+        layout.addWidget(button)
+
 
 def main():
     app = QApplication(sys.argv)
     window = Window()
+    inputWindow1(window)
     window.show()
     sys.exit(app.exec())
 
