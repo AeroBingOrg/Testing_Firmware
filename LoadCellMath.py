@@ -22,6 +22,8 @@ class Load_cell_math:
         )
     )
 
+
+
     try:
         # Read the data from the CSV file
         dataTable = pd.read_csv(filepath, skiprows=1)  # Skip the first row if it contains headers

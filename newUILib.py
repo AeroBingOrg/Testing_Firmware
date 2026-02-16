@@ -7,51 +7,35 @@ import sys
 import os
 
 class Window(QWidget):
-
+    
     def __init__(self):
-        #Make base window
         super().__init__()
-        self.resize(500,450)
+        self.resize(300,250)
+        self.setWindowTitle("Enter values")
 
-    def inputWindow1(window):
-        end = False
-
-        def stop():
-            end = True
-
-        window.setWindowTitle("Import values")
         layout = QVBoxLayout()
-        window.setLayout(layout)
-        while not end:
-            for i in range(0,4):
-                window.input = QLineEdit()
-                window.input.setFixedWidth(150)
-                layout.addWidget(window.input, alignment= Qt.AlignmentFlag.AlignCenter)
+        self.setLayout(layout)
+ 
+        self.input = QLineEdit()
+        self.input.setFixedWidth(150)
+        layout.addWidget(self.input, alignment= Qt.AlignmentFlag.AlignCenter)
+ 
+        button = QPushButton("X")
+        button.clicked.connect(self.get)
+        layout.addWidget(button)
 
-            button = QPushButton("Done")
-            button.clicked.connect(stop())
-            layout.addWidget(button)
+        button = QPushButton("Done")
+        button.clicked.connect(self.input.clear)
+        layout.addWidget(button)
 
-
-    def inputWindow2(window):
-        window.setWindowTitle("Import values")
-        layout = QVBoxLayout()
-        window.setLayout(layout)
-        while True:
-            for i in range(0,4):
-                window.input = QLineEdit()
-                window.input.setFixedWidth(150)
-                layout.addWidget(window.input, alignment= Qt.AlignmentFlag.AlignCenter)
-
-            button = QPushButton("Done")
-            button.clicked.connect(window.get)
-            layout.addWidget(button)
+    def get(self):
+        text = self.input.text()
+        print(text)
 
 
 def main():
     app = QApplication(sys.argv)
     window = Window()
-    inputWindow1(window) #doesnt work rn 
     window.show()
     sys.exit(app.exec())
 
