@@ -2,6 +2,7 @@ from LoadCellMath import Load_cell_math
 from LoadCellGraph import testing_UI
 from PyQt6.QtWidgets import QApplication, QWidget, QLineEdit, QPushButton, QVBoxLayout, QFormLayout, QLabel, QHBoxLayout, QMessageBox
 import sys
+import traceback
 import os
 
 class Window(QWidget): #Code still is broken, but recreated tkinter ui with PyQt6
@@ -27,7 +28,8 @@ class Window(QWidget): #Code still is broken, but recreated tkinter ui with PyQt
 
                 testing_UI.plots(filtered_pressure_above_20N, filtered_thrust_above_20N, 
                        filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N)
-            except:
+            except Exception as e:
+                traceback.print_exc()
                 QMessageBox.information(window, "Error", "Failed Calculations & Graphing.")
 
         app = QApplication(sys.argv)
