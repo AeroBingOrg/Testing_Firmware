@@ -28,7 +28,11 @@ class Window(QWidget): #Code still is broken, but recreated tkinter ui with PyQt
 
                 testing_UI.plots(filtered_pressure_above_20N, filtered_thrust_above_20N, 
                        filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N)
+                
             except Exception as e:
+                os.system('cls')
+                print(f"Basic error:\n {e} \n")
+                print("Advanced error log: \n")
                 traceback.print_exc()
                 QMessageBox.information(window, "Error", "Failed Calculations & Graphing.")
 
@@ -66,6 +70,7 @@ class Window(QWidget): #Code still is broken, but recreated tkinter ui with PyQt
         submit_button.clicked.connect(submit)
         button_layout.addWidget(submit_button)
 
+        #make entire UI visible
         main_layout = QVBoxLayout()
         main_layout.addLayout(layout)
         main_layout.addLayout(button_layout)
