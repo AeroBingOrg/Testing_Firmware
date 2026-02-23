@@ -6,7 +6,7 @@ from tkinter import simpledialog, messagebox, filedialog
 import os
 
 class Load_cell_math:
-  def __init__(self, lowerthrust: int, upperthrust: int, maxthrust_precent: int, spacing: int):
+  def __init__(self, lowerthrust: float, upperthrust: float, maxthrust_precent: float, spacing: int):
     self.lowerthrust = lowerthrust
     self.upperthrust = upperthrust
     self.maxthrust_precent = maxthrust_precent
@@ -18,11 +18,9 @@ class Load_cell_math:
         initialdir="/",  
         title="Select a file",  
         filetypes=(
-            ("CSV files", "*.csv")
+            ("CSV Files", "*.csv"), ('All', '*.*')
         )
     )
-
-
 
     try:
         # Read the data from the CSV file
@@ -38,14 +36,14 @@ class Load_cell_math:
     root = tk.Tk()
     root.withdraw()  # Hide the main window
 
-    MaxThrust = simpledialog.askstring("Input", "What is the expected max thrust (in Newtons):", initialvalue="0")
+    MaxThrust = float(simpledialog.askstring("Input", "What is the expected max thrust (in Newtons):", initialvalue="0"))
     
     if MaxThrust is None:
         return
     try:
         # Convert the user input to the desired variable type
-        MaxThrustInput = float(MaxThrust)
-        TooLarge = MaxThrustInput * self.maxthrust_precent
+        MaxThrustInput = MaxThrust
+        TooLarge = (MaxThrustInput) * float(self.maxthrust_precent) #1000000
     except ValueError:
         messagebox.showerror("Error", "Invalid input for max thrust")
         return
@@ -62,7 +60,7 @@ class Load_cell_math:
     # Find indices where thrust is greater than upperthrust and drops below lowerthrust
     indices_above_20N = np.where(thrust_N > self.upperthrust)[0]
     indices_below_20N = np.where(thrust_N < self.lowerthrust)[0]
-    
+
     IAL = len(indices_above_20N)
     IBL = len(indices_below_20N)
 
@@ -77,6 +75,7 @@ class Load_cell_math:
         end_idx = min(L, k + self.spacing + 1)
         
         iThrustData = thrust_N[start_idx:end_idx]
+        print(iThrustData)
         DumbBig = thrust_N[k]
         
         if DumbBig > TooLarge:
@@ -102,7 +101,7 @@ class Load_cell_math:
             max_idx = indices_above_20N[-1]
             messagebox(f'Max Thrust: {thrust_N[max_idx]:.2f} N, Max Pressure: {pressure_psi[max_idx]:.2f} psi')
         return
-
+    
     # Check if the thrust drops below lowerthrust in the data
     if len(indices_below_20N) > 0:
         # Select points around when thrust exceeds upperthrust
@@ -119,7 +118,7 @@ class Load_cell_math:
         filtered_time_above_20N = time_ms[start_A20N:end_A20N+1]
         filtered_thrust_above_20N = thrust_N[start_A20N:end_A20N+1]
         filtered_pressure_above_20N = pressure_psi[start_A20N:end_A20N+1]
-
+    
         # Calculate Impulse (Riemann sum of thrust)
         if len(filtered_time_above_20N) > 1:
             dt = np.diff(filtered_time_above_20N)  # Calculate time intervals
@@ -127,4 +126,5 @@ class Load_cell_math:
         else:
             impulse = 0
 
+    
     return filtered_pressure_above_20N, filtered_thrust_above_20N, filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N

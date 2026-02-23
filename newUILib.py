@@ -7,19 +7,19 @@ import os
 
 class Window(QWidget): #Code still is broken, but recreated tkinter ui with PyQt6
     
-    def main():
+    def main(): #2334.71 - max thrust placeholder value (use datav2 csv)
 
         def submit(): #this runs when you submit your values
             values = {
-            'lowerthrust': lower_thrust_input.text(),
-            'upperthrust': upper_thrust_input.text(),
-            'maxthrust_precent': maxthrust_precent_input.text(),
-            'spacing': spacing_input.text()
+            'lowerthrust': float(lower_thrust_input.text()),
+            'upperthrust': float(upper_thrust_input.text()),
+            'maxthrust_precent': float(maxthrust_precent_input.text()),
+            'spacing': int(spacing_input.text())
             }
-            print("Lower thrust: " + values['lowerthrust'])
+            '''print("Lower thrust: " + values['lowerthrust'])
             print("Upper thrust: " + values['upperthrust'])
             print("Max thrust %: " + values['maxthrust_precent'])
-            print("Spacing: " + values['spacing'])
+            print("Spacing: " + values['spacing'])'''
 
             try:
                 math = Load_cell_math(values['lowerthrust'], values["upperthrust"], values["maxthrust_precent"], values["spacing"])
@@ -30,9 +30,9 @@ class Window(QWidget): #Code still is broken, but recreated tkinter ui with PyQt
                        filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N)
                 
             except Exception as e:
-                os.system('cls')
+                #os.system('cls')
                 print(f"Basic error:\n {e} \n")
-                print("Advanced error log: \n")
+                print("Advanced error log: ")
                 traceback.print_exc()
                 QMessageBox.information(window, "Error", "Failed Calculations & Graphing.")
 
@@ -40,7 +40,7 @@ class Window(QWidget): #Code still is broken, but recreated tkinter ui with PyQt
         
         #Create window
         window = QWidget()
-        window.resize(300,200)
+        window.resize(350,200)
         window.setWindowTitle("Import values")
 
         layout = QFormLayout()
