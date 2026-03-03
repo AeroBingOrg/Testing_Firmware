@@ -5,9 +5,9 @@ import sys
 import traceback
 import os
 
-class Window(QWidget): #Code still is broken, but recreated tkinter ui with PyQt6
+class Window(QWidget):
     
-    def main(): #2334.71 - max thrust placeholder value (use datav2 csv)
+    def main(): 
 
         def submit(): #this runs when you submit your values
             values = {
@@ -26,7 +26,8 @@ class Window(QWidget): #Code still is broken, but recreated tkinter ui with PyQt
 
                 filtered_pressure_above_20N, filtered_thrust_above_20N, filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N = math.calculations()
 
-                testing_UI.plots(filtered_pressure_above_20N, filtered_thrust_above_20N, 
+                graph = testing_UI()
+                graph.plots(filtered_pressure_above_20N, filtered_thrust_above_20N, 
                        filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N)
                 
             except Exception as e:

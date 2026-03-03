@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from scipy.stats import zscore
 import matplotlib.pyplot as plt
 import tkinter as tk
 from tkinter import simpledialog, messagebox, filedialog
@@ -39,14 +40,14 @@ class Load_cell_math:
     MaxThrust = float(simpledialog.askstring("Input", "What is the expected max thrust (in Newtons):", initialvalue="0"))
     
     if MaxThrust is None:
-        return
+        return None, None, None, None, None, None, None
     try:
         # Convert the user input to the desired variable type
         MaxThrustInput = MaxThrust
         TooLarge = (MaxThrustInput) * float(self.maxthrust_precent) #1000000
     except ValueError:
         messagebox.showerror("Error", "Invalid input for max thrust")
-        return
+        return None, None, None, None, None, None, None
 
     # Getting Data
     # Extract time (first column), thrust (third column), and pressure (fifth column) data
@@ -64,10 +65,17 @@ class Load_cell_math:
     IAL = len(indices_above_20N)
     IBL = len(indices_below_20N)
 
-    # Process indices to remove outliers
+
+    # Process indices to remove outliers (not a perfect method but the original filter was not working)
     indices_above_20Nfixed = []
-    
-    for i in range(IAL):
+
+    #array of z scores for each data point
+    z = zscore(thrust_N)
+
+    #filters out points whose z score is very large
+    indices_above_20Nfixed = np.array(thrust_N[np.abs(z) <= TooLarge],dtype=int)
+
+    '''for i in range(IAL): old outlier filter
         k = indices_above_20N[i]
         
         # Make sure we don't go out of bounds
@@ -75,7 +83,6 @@ class Load_cell_math:
         end_idx = min(L, k + self.spacing + 1)
         
         iThrustData = thrust_N[start_idx:end_idx]
-        print(iThrustData)
         DumbBig = thrust_N[k]
         
         if DumbBig > TooLarge:
@@ -93,14 +100,14 @@ class Load_cell_math:
         if iAvg > 20:
             indices_above_20Nfixed.append(indices_above_20N[i])
 
-    indices_above_20Nfixed = np.array(indices_above_20Nfixed)
+    indices_above_20Nfixed = np.array(indices_above_20Nfixed) '''
 
     if len(indices_above_20Nfixed) == 0:
         messagebox.showwarning("warning",'There were not enough data points to gather data now displaying the max pressure and thrust recorded')
         if len(indices_above_20N) > 0:
             max_idx = indices_above_20N[-1]
-            messagebox(f'Max Thrust: {thrust_N[max_idx]:.2f} N, Max Pressure: {pressure_psi[max_idx]:.2f} psi')
-        return
+            messagebox.showinfo(f'Max Thrust: {thrust_N[max_idx]:.2f} N, Max Pressure: {pressure_psi[max_idx]:.2f} psi') #this displays all the info in the title of the window so it might get cut off
+        return 
     
     # Check if the thrust drops below lowerthrust in the data
     if len(indices_below_20N) > 0:
@@ -126,5 +133,4 @@ class Load_cell_math:
         else:
             impulse = 0
 
-    
     return filtered_pressure_above_20N, filtered_thrust_above_20N, filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N
