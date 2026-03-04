@@ -70,10 +70,10 @@ class Load_cell_math:
     indices_above_20Nfixed = []
 
     #array of z scores for each data point
-    z = zscore(thrust_N)
+    z_scores = zscore(thrust_N)
 
-    #filters out points whose z score is very large
-    indices_above_20Nfixed = np.array(thrust_N[np.abs(z) <= TooLarge],dtype=int)
+    #filters out points whose z score is large
+    indices_above_20Nfixed = np.array(thrust_N[np.abs(z_scores) <= 3], dtype=int)
 
     '''for i in range(IAL): old outlier filter
         k = indices_above_20N[i]

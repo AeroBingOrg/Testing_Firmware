@@ -30,7 +30,7 @@ class testing_UI:
     ax1.text(0.02, 0.72, f'Burn Time: {timeBurn:.2f} s', 
             transform=ax1.transAxes, ha='left', va='top', 
             color='green', fontsize=10)
-
+    
     # Pressure plot
     ax2.plot(filtered_time_above_20N, filtered_pressure_above_20N, '-')
     ax2.set_xlabel('Time (s)')
