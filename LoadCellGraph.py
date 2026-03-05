@@ -33,6 +33,12 @@ class testing_UI:
     
     # Pressure plot
     ax2.plot(filtered_time_above_20N, filtered_pressure_above_20N, '-')
+
+    #Debug prints
+    print(f"pressure: {filtered_pressure_above_20N}")
+    print(f"thrust: {filtered_thrust_above_20N}")
+    print(f"time: {filtered_time_above_20N}")
+
     ax2.set_xlabel('Time (s)')
     ax2.set_ylabel('Pressure (psi)')
     ax2.set_title('Time vs. Pressure')

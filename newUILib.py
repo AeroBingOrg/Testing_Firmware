@@ -16,10 +16,6 @@ class Window(QWidget):
             'maxthrust_precent': float(maxthrust_precent_input.text()),
             'spacing': int(spacing_input.text())
             }
-            '''print("Lower thrust: " + values['lowerthrust'])
-            print("Upper thrust: " + values['upperthrust'])
-            print("Max thrust %: " + values['maxthrust_precent'])
-            print("Spacing: " + values['spacing'])'''
 
             try:
                 math = Load_cell_math(values['lowerthrust'], values["upperthrust"], values["maxthrust_precent"], values["spacing"])
@@ -29,9 +25,10 @@ class Window(QWidget):
                 graph = testing_UI()
                 graph.plots(filtered_pressure_above_20N, filtered_thrust_above_20N, 
                        filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N)
+                #os.system('cls')
                 
             except Exception as e:
-                #os.system('cls')
+                os.system('cls')
                 print(f"Basic error:\n {e} \n")
                 print("Advanced error log: ")
                 traceback.print_exc()

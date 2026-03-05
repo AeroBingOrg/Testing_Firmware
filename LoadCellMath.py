@@ -132,5 +132,5 @@ class Load_cell_math:
             impulse = np.sum(filtered_thrust_above_20N[:-1] * dt)  # Riemann sum calculation
         else:
             impulse = 0
-
+    
     return filtered_pressure_above_20N, filtered_thrust_above_20N, filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N
