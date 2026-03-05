@@ -10,7 +10,7 @@ class Window(QWidget):
     def main(): 
 
         def submit(): #this runs when you submit your values
-            os.system('cls')
+            #os.system('cls')
             values = {
             'lowerthrust': float(lower_thrust_input.text()),
             'upperthrust': float(upper_thrust_input.text()),

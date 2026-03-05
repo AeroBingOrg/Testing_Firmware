@@ -59,8 +59,14 @@ class Load_cell_math:
     time_ms = time_sec / 1000  
 
     # Find indices where thrust is greater than upperthrust and drops below lowerthrust
-    indices_above_20N = np.where(thrust_N > self.upperthrust)[0]
-    indices_below_20N = np.where(thrust_N < self.lowerthrust)[0]
+    #indices_above_20N = np.argwhere(thrust_N > self.upperthrust)
+    #indices_below_20N = np.argwhere(thrust_N < self.lowerthrust)
+
+    indices_above_20N = np.array([i for i in thrust_N if i > self.upperthrust],dtype=int)
+    indices_below_20N = np.array([i for i in thrust_N if i < self.lowerthrust],dtype=int)
+
+    print(f"Above 20: {thrust_N[indices_above_20N]}")
+    print(f"Below 20: {thrust_N[indices_below_20N]}")
 
     IAL = len(indices_above_20N)
     IBL = len(indices_below_20N)
@@ -73,8 +79,7 @@ class Load_cell_math:
     z_scores = zscore(thrust_N)
 
     #filters out points whose z score is large
-    indices_above_20Nfixed = np.array(thrust_N[np.abs(z_scores) <= 4], dtype=int)
-    
+    indices_above_20Nfixed = np.argwhere(np.array(thrust_N[np.abs(z_scores) <= 3]))
 
     '''for i in range(IAL): old outlier filter
         k = indices_above_20N[i]
@@ -134,4 +139,5 @@ class Load_cell_math:
         else:
             impulse = 0
     
+
     return filtered_pressure_above_20N, filtered_thrust_above_20N, filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N
