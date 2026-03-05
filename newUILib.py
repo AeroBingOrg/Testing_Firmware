@@ -10,6 +10,7 @@ class Window(QWidget):
     def main(): 
 
         def submit(): #this runs when you submit your values
+            os.system('cls')
             values = {
             'lowerthrust': float(lower_thrust_input.text()),
             'upperthrust': float(upper_thrust_input.text()),
@@ -25,10 +26,9 @@ class Window(QWidget):
                 graph = testing_UI()
                 graph.plots(filtered_pressure_above_20N, filtered_thrust_above_20N, 
                        filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N)
-                #os.system('cls')
+                
                 
             except Exception as e:
-                os.system('cls')
                 print(f"Basic error:\n {e} \n")
                 print("Advanced error log: ")
                 traceback.print_exc()

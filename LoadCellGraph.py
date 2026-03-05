@@ -34,7 +34,7 @@ class testing_UI:
     # Pressure plot
     ax2.plot(filtered_time_above_20N, filtered_pressure_above_20N, '-')
 
-    #Debug prints
+    #Debug prints (length of the arrays is 210)
     print(f"pressure: {filtered_pressure_above_20N}")
     print(f"thrust: {filtered_thrust_above_20N}")
     print(f"time: {filtered_time_above_20N}")
