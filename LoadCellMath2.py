@@ -54,13 +54,18 @@ class Load_cell_math:
     dataTable = dataTable[dataTable.iloc[:,2] > self.upperthrust]
     dataTable.reset_index(drop=True)
 
-    time_sec = dataTable.iloc[:, 0].values 
+    time_ms = dataTable.iloc[:, 0].values 
     thrust_N = dataTable.iloc[:, 2].values  
     pressure_psi = dataTable.iloc[:, 4].values
     L = len(thrust_N)
 
-    time_ms = time_sec / 1000  
+    time_sec = time_ms / 1000  
 
+    print(f"time: {time_sec}")
+    print(f"Thrust: {thrust_N}")
+    print(f"pressure: {pressure_psi}")
+
+    print(f"csv: {dataTable}")
     # Find indices where thrust is greater than upperthrust and drops below lowerthrust
     #indices_above_20N = np.argwhere(thrust_N > self.upperthrust)
     #indices_below_20N = np.argwhere(thrust_N < self.lowerthrust)
@@ -143,4 +148,4 @@ class Load_cell_math:
         impulse = 0
     
 
-    return pressure_psi, thrust_N, time_ms, impulse, time_ms, 0, len(dataTable)-1
+    return pressure_psi, thrust_N, time_ms, impulse, time_sec, 0, len(dataTable)-1
