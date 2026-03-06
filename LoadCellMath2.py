@@ -51,6 +51,9 @@ class Load_cell_math:
 
     # Getting Data
     # Extract time (first column), thrust (third column), and pressure (fifth column) data
+    dataTable = dataTable[dataTable.iloc[:,2] > 20]
+    dataTable.reset_index(drop=True)
+
     time_sec = dataTable.iloc[:, 0].values 
     thrust_N = dataTable.iloc[:, 2].values  
     pressure_psi = dataTable.iloc[:, 4].values
@@ -61,7 +64,7 @@ class Load_cell_math:
     # Find indices where thrust is greater than upperthrust and drops below lowerthrust
     #indices_above_20N = np.argwhere(thrust_N > self.upperthrust)
     #indices_below_20N = np.argwhere(thrust_N < self.lowerthrust)
-
+    '''
     indices_above_20N = np.array([i for i in thrust_N if i > self.upperthrust],dtype=int)
     indices_below_20N = np.array([i for i in thrust_N if i < self.lowerthrust],dtype=int)
 
@@ -81,7 +84,7 @@ class Load_cell_math:
     #filters out points whose z score is large
     indices_above_20Nfixed = np.argwhere(np.array(thrust_N[np.abs(z_scores) <= 3]))
 
-    '''for i in range(IAL): old outlier filter
+    for i in range(IAL): old outlier filter
         k = indices_above_20N[i]
         
         # Make sure we don't go out of bounds
@@ -106,7 +109,7 @@ class Load_cell_math:
         if iAvg > 20:
             indices_above_20Nfixed.append(indices_above_20N[i])
 
-    indices_above_20Nfixed = np.array(indices_above_20Nfixed) '''
+    indices_above_20Nfixed = np.array(indices_above_20Nfixed)
 
     if len(indices_above_20Nfixed) == 0:
         messagebox.showwarning("warning",'There were not enough data points to gather data now displaying the max pressure and thrust recorded')
@@ -131,13 +134,13 @@ class Load_cell_math:
         filtered_time_above_20N = time_ms[start_A20N:end_A20N+1]
         filtered_thrust_above_20N = thrust_N[start_A20N:end_A20N+1]
         filtered_pressure_above_20N = pressure_psi[start_A20N:end_A20N+1]
-        
+        '''
         # Calculate Impulse (Riemann sum of thrust)
-        if len(filtered_time_above_20N) > 1:
-            dt = np.diff(filtered_time_above_20N)  # Calculate time intervals
-            impulse = np.sum(filtered_thrust_above_20N[:-1] * dt)  # Riemann sum calculation
-        else:
-            impulse = 0
+    if len(time_ms) > 1:
+        dt = np.diff(time_sec)  # Calculate time intervals
+        impulse = np.sum(thrust_N[:-1] * dt)  # Riemann sum calculation
+    else:
+        impulse = 0
     
 
-    return filtered_pressure_above_20N, filtered_thrust_above_20N, filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N
+    return pressure_psi, thrust_N, time_ms, impulse, time_ms, 0, len(dataTable)-1

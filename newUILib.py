@@ -1,4 +1,4 @@
-from LoadCellMath import Load_cell_math
+from LoadCellMath2 import Load_cell_math
 from LoadCellGraph import testing_UI
 from PyQt6.QtWidgets import QApplication, QWidget, QLineEdit, QPushButton, QVBoxLayout, QFormLayout, QLabel, QHBoxLayout, QMessageBox
 import sys
