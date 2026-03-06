@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
-from tkinter import messagebox, filedialog
-import sys
+import matplotlib.pyplot as plt
+import tkinter as tk
+from tkinter import simpledialog, messagebox, filedialog
 
 class Load_cell_math:
   def __init__(self, min_pressure: float):

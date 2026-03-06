@@ -76,7 +76,7 @@ class Window(QWidget):
         window.setLayout(main_layout)
 
         window.show()
-        
+
         sys.exit(app.exec())
 
     if __name__ == "__main__":
