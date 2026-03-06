@@ -40,9 +40,8 @@ class Load_cell_math:
     time_ms = dataTable.iloc[:, 0].values 
     thrust_N = dataTable.iloc[:, 2].values  
     pressure_psi = dataTable.iloc[:, 4].values
-    L = len(thrust_N)
 
-    time_sec = time_ms / 1000  
+    time_sec = time_ms / 1000
 
     '''Debug prints
     print(f"time: {time_sec}")
@@ -59,4 +58,4 @@ class Load_cell_math:
         impulse = 0
     
 
-    return pressure_psi, thrust_N, time_ms, impulse, time_sec, 0, len(dataTable)-1
+    return pressure_psi, thrust_N, time_sec, impulse, time_ms, 0, len(dataTable)-1
