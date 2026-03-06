@@ -51,7 +51,7 @@ class Load_cell_math:
 
     # Getting Data
     # Extract time (first column), thrust (third column), and pressure (fifth column) data
-    dataTable = dataTable[dataTable.iloc[:,2] > self.upperthrust]
+    dataTable = dataTable[dataTable.iloc[:,4] > 10]
     dataTable.reset_index(drop=True)
 
     time_ms = dataTable.iloc[:, 0].values 
