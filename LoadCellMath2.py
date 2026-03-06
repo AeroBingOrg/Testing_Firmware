@@ -1,16 +1,14 @@
 import pandas as pd
 import numpy as np
-from scipy.stats import zscore
-import matplotlib.pyplot as plt
-import tkinter as tk
-from tkinter import simpledialog, messagebox, filedialog
-import os
+from tkinter import messagebox, filedialog
+import sys
 
 class Load_cell_math:
   def __init__(self, min_pressure: float):
     self.min_pressure = min_pressure
 
   def calculations(self):
+    
     # Load CSV data file
     filepath = filedialog.askopenfilename(
         initialdir="/",  
@@ -36,7 +34,11 @@ class Load_cell_math:
     #Gets rid of rows where pressure < input min_pressure
     dataTable = dataTable[dataTable.iloc[:,4] > self.min_pressure]
     dataTable.reset_index(drop=True)
-
+    
+    if (len(dataTable) == 0):
+       messagebox.showerror("Error", "No data points with pressure above min_pressure")
+       sys.exit(0)
+    
     time_ms = dataTable.iloc[:, 0].values 
     thrust_N = dataTable.iloc[:, 2].values  
     pressure_psi = dataTable.iloc[:, 4].values
@@ -56,6 +58,5 @@ class Load_cell_math:
         impulse = np.sum(thrust_N[:-1] * dt)  # Riemann sum calculation
     else:
         impulse = 0
-    
 
     return pressure_psi, thrust_N, time_sec, impulse, time_ms, 0, len(dataTable)-1
