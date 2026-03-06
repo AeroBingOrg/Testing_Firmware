@@ -18,26 +18,21 @@ class testing_UI:
 
     # Display maximum thrust value in the top left corner
     max_thrust = np.max(filtered_thrust_above_20N)
-    ax1.text(0.02, 0.98, f'Max Thrust: {max_thrust:.2f} N', 
-            ha='left', va='top', color='red', fontsize=10)
+    ax1.text(0.98, 0.98, f'Max Thrust: {max_thrust:.2f} N', transform=ax1.transAxes,
+            ha='right', va='top', color='red', fontsize=10)
 
     # Display Impulse
-    ax1.text(0.02, 0.85, f'Impulse: {impulse:.2f} Ns', 
-            ha='left', va='top', color='blue', fontsize=10)
+    ax1.text(0.98, 0.85, f'Impulse: {impulse:.2f} Ns', transform=ax1.transAxes,
+            ha='right', va='top', color='blue', fontsize=10)
 
     # Display Burn Time
-    timeBurn = time_ms[end_A20N] - time_ms[start_A20N]
-    ax1.text(0.02, 0.72, f'Burn Time: {timeBurn:.2f} s', 
-            transform=ax1.transAxes, ha='left', va='top', 
+    timeBurn = abs(time_ms[end_A20N] - time_ms[start_A20N])
+    ax1.text(0.98, 0.72, f'Burn Time: {timeBurn:.2f} s', 
+            transform=ax1.transAxes, ha='right', va='top', 
             color='green', fontsize=10)
     
     # Pressure plot
     ax2.plot(filtered_time_above_20N, filtered_pressure_above_20N, '-')
-
-    #Debug prints (length of the arrays is 210)
-    print(f"pressure: {filtered_pressure_above_20N}")
-    print(f"thrust: {filtered_thrust_above_20N}")
-    print(f"time: {filtered_time_above_20N}")
 
     ax2.set_xlabel('Time (s)')
     ax2.set_ylabel('Pressure (psi)')
@@ -46,8 +41,11 @@ class testing_UI:
 
     # Display maximum pressure value
     max_pressure = np.max(filtered_pressure_above_20N)
-    ax2.text(0.02, 0.98, f'Max Pressure: {max_pressure:.2f} psi', 
-            ha='left', va='top', color='red', fontsize=10)
+    ax2.text(0.98, 0.98, f'Max Pressure: {max_pressure:.2f} psi', transform=ax2.transAxes,
+            ha='right', va='top', color='red', fontsize=10)
+
+    plt.style.use('seaborn-v0_8')
 
     plt.tight_layout()
+    plt.subplots_adjust(hspace=0.35)
     plt.show()

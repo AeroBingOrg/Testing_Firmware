@@ -12,14 +12,14 @@ class Window(QWidget):
         def submit(): #this runs when you submit your values
             #os.system('cls')
             values = {
-            'lowerthrust': float(lower_thrust_input.text()),
-            'upperthrust': float(upper_thrust_input.text()),
-            'maxthrust_precent': float(maxthrust_precent_input.text()),
-            'spacing': int(spacing_input.text())
+            #'lowerthrust': float(lower_thrust_input.text()),
+            'min_pressure': float(min_pressure_input.text()),
+            #'maxthrust_precent': float(maxthrust_precent_input.text()),
+            #'spacing': int(spacing_input.text())
             }
 
             try:
-                math = Load_cell_math(values['lowerthrust'], values["upperthrust"], values["maxthrust_precent"], values["spacing"])
+                math = Load_cell_math(values["min_pressure"])
 
                 filtered_pressure_above_20N, filtered_thrust_above_20N, filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N = math.calculations()
 
@@ -38,29 +38,29 @@ class Window(QWidget):
         
         #Create window
         window = QWidget()
-        window.resize(350,200)
+        window.resize(100,100)
         window.setWindowTitle("Import values")
 
         layout = QFormLayout()
 
         #Create inputs
-        lower_thrust_label = QLabel("Lower Thrust: ")
-        lower_thrust_input = QLineEdit()
+        #lower_thrust_label = QLabel("Lower Thrust: ")
+        #lower_thrust_input = QLineEdit()
 
-        upper_thrust_label = QLabel("Upper Thrust: ")
-        upper_thrust_input = QLineEdit()
+        min_pressure_label = QLabel("Min Pressure (filter points w/ pressure below this, recommend 10psi): ")
+        min_pressure_input = QLineEdit()
 
-        maxthrust_precent_label = QLabel("Max Thrust %: ")
-        maxthrust_precent_input = QLineEdit()
+        #maxthrust_precent_label = QLabel("Max Thrust %: ")
+        #maxthrust_precent_input = QLineEdit()
 
-        spacing_label = QLabel("Spacing: ")
-        spacing_input = QLineEdit()
+        #spacing_label = QLabel("Spacing: ")
+        #spacing_input = QLineEdit()
 
         #Make inputs visible
-        layout.addRow(lower_thrust_label, lower_thrust_input)
-        layout.addRow(upper_thrust_label, upper_thrust_input)
-        layout.addRow(maxthrust_precent_label, maxthrust_precent_input)
-        layout.addRow(spacing_label, spacing_input)
+        #layout.addRow(lower_thrust_label, lower_thrust_input)
+        layout.addRow(min_pressure_label, min_pressure_input)
+        #layout.addRow(maxthrust_precent_label, maxthrust_precent_input)
+        #layout.addRow(spacing_label, spacing_input)
 
         #Add submit values button
         button_layout = QHBoxLayout()
