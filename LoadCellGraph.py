@@ -5,7 +5,7 @@ matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 
 class testing_UI:
-  def plots(self, filtered_pressure_above_20N, filtered_thrust_above_20N, filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N):
+  def plots(self, filtered_pressure_above_20N, filtered_thrust_above_20N, filtered_time_above_20N, impulse, time_ms, start_90PSI, end_90PSI):
     # Plot time vs. thrust and pressure
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
 
@@ -25,15 +25,8 @@ class testing_UI:
     ax1.text(0.98, 0.85, f'Impulse: {impulse:.2f} Ns', transform=ax1.transAxes,
             ha='right', va='top', color='blue', fontsize=10)
 
-    #Find first instance where pressure > 90, and last instance where pressure > 90
-    boolean_column = filtered_pressure_above_20N >= 90
-    differences = np.diff(boolean_column.astype(int))
-
-    start_90psi = np.where(differences == 1)[0] + 1
-    end_90psi = np.where(differences == -1)[0]
-
     # Display Burn Time
-    timeBurn = abs(filtered_time_above_20N[start_90psi] - filtered_time_above_20N[end_90psi])
+    timeBurn = abs(filtered_time_above_20N[start_90PSI] - filtered_time_above_20N[end_90PSI])
     ax1.text(0.98, 0.72, f'Burn Time: {timeBurn.item():.2f} s', 
             transform=ax1.transAxes, ha='right', va='top', 
             color='green', fontsize=10)
@@ -50,9 +43,7 @@ class testing_UI:
     max_pressure = np.max(filtered_pressure_above_20N)
     ax2.text(0.98, 0.98, f'Max Pressure: {max_pressure:.2f} psi', transform=ax2.transAxes,
             ha='right', va='top', color='red', fontsize=10)
-
-    plt.style.use('seaborn-v0_8')
-
+    
     plt.tight_layout()
     plt.subplots_adjust(hspace=0.35)
     plt.show()

@@ -60,4 +60,12 @@ class Load_cell_math:
     else:
         impulse = 0
 
-    return pressure_psi, thrust_N, time_sec, impulse, time_ms, 0, len(dataTable)-1
+    #Find first index where pressure > 90, and last index where pressure > 90
+
+    boolean_column = pressure_psi >= np.max(pressure_psi)*0.1
+    differences = np.diff(boolean_column.astype(int))
+
+    start_90PSI = np.where(differences == 1)[0] + 1
+    end_90PSI = np.where(differences == -1)[0]
+
+    return pressure_psi, thrust_N, time_sec, impulse, time_ms, start_90PSI, end_90PSI
