@@ -26,7 +26,7 @@ class testing_UI:
             ha='right', va='top', color='blue', fontsize=10)
 
     # Display Burn Time
-    timeBurn = abs(time_ms[end_A20N] - time_ms[start_A20N])
+    timeBurn = abs(filtered_time_above_20N[end_A20N] - filtered_time_above_20N[start_A20N])
     ax1.text(0.98, 0.72, f'Burn Time: {timeBurn:.2f} s', 
             transform=ax1.transAxes, ha='right', va='top', 
             color='green', fontsize=10)
