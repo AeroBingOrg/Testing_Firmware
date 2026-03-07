@@ -25,9 +25,19 @@ class testing_UI:
     ax1.text(0.98, 0.85, f'Impulse: {impulse:.2f} Ns', transform=ax1.transAxes,
             ha='right', va='top', color='blue', fontsize=10)
 
+    #Find first instance where pressure > 90, and last instance where pressure > 90
+    boolean_column = filtered_pressure_above_20N >= 90
+    differences = np.diff(boolean_column.astype(int))
+
+    start_90psi = np.where(differences == 1)[0] + 1
+    end_90psi = np.where(differences == -1)[0]
+    
+    print(start_90psi)
+    print(end_90psi)
+
     # Display Burn Time
-    timeBurn = abs(filtered_time_above_20N[end_A20N] - filtered_time_above_20N[start_A20N])
-    ax1.text(0.98, 0.72, f'Burn Time: {timeBurn:.2f} s', 
+    timeBurn = abs(filtered_time_above_20N[start_90psi] - filtered_time_above_20N[end_90psi])
+    ax1.text(0.98, 0.72, f'Burn Time: {timeBurn.item():.2f} s', 
             transform=ax1.transAxes, ha='right', va='top', 
             color='green', fontsize=10)
     
