@@ -31,9 +31,6 @@ class testing_UI:
 
     start_90psi = np.where(differences == 1)[0] + 1
     end_90psi = np.where(differences == -1)[0]
-    
-    print(start_90psi)
-    print(end_90psi)
 
     # Display Burn Time
     timeBurn = abs(filtered_time_above_20N[start_90psi] - filtered_time_above_20N[end_90psi])
