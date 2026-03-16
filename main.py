@@ -1,66 +1,83 @@
 from LoadCellMath import Load_cell_math
 from LoadCellGraph import testing_UI
-import tkinter as tk
-from tkinter import messagebox
+from PyQt6.QtWidgets import QApplication, QWidget, QLineEdit, QPushButton, QVBoxLayout, QFormLayout, QLabel, QHBoxLayout, QMessageBox
+import sys
 import traceback
 import os
-  
-def main():
-  # Create main window
-  root = tk.Tk()
-  root.title("Input Values")
-  root.geometry("300x200")
-   
-  # Variables to store values
-  lowerthrust = tk.IntVar()
-  upperthrust = tk.IntVar()
-  maxthrust_precent = tk.IntVar()
-  spacing = tk.IntVar()
- 
-  # Create input fields
-  tk.Label(root, text="lowerthrust:").grid(row=0, column=0, padx=10, pady=5, sticky="w")
-  tk.Entry(root, textvariable=lowerthrust).grid(row=0, column=1, padx=10, pady=5)
-    
-  tk.Label(root, text="upperthrust:").grid(row=1, column=0, padx=10, pady=5, sticky="w")
-  tk.Entry(root, textvariable=upperthrust).grid(row=1, column=1, padx=10, pady=5)
-    
-  tk.Label(root, text="maxthrust_precent:").grid(row=2, column=0, padx=10, pady=5, sticky="w")
-  tk.Entry(root, textvariable=maxthrust_precent).grid(row=2, column=1, padx=10, pady=5)
-    
-  tk.Label(root, text="spacing:").grid(row=3, column=0, padx=10, pady=5, sticky="w")
-  tk.Entry(root, textvariable=spacing).grid(row=3, column=1, padx=10, pady=5)
-    
-  # Function to save values
-  def run():
-    values = {
-      'lowerthrust': lowerthrust.get(),
-      'upperthrust': upperthrust.get(),
-      'maxthrust_precent': maxthrust_precent.get(),
-      'spacing': spacing.get()
-    }
 
-    try:
-      math = Load_cell_math(values['lowerthrust'], values["upperthrust"], values["maxthrust_precent"], values["spacing"])
+class Window(QWidget):
+    
+    def main(): 
 
-      filtered_pressure_above_20N, filtered_thrust_above_20N, filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N = math.calculations()
+        def submit(): #this runs when you submit your values
+            os.system('cls')
+            values = {
+            #'lowerthrust': float(lower_thrust_input.text()),
+            'min_pressure': float(min_pressure_input.text()),
+            #'maxthrust_precent': float(maxthrust_precent_input.text()),
+            #'spacing': int(spacing_input.text())
+            }
 
-      testing_UI.plots(filtered_pressure_above_20N, filtered_thrust_above_20N, 
+            try:
+                math = Load_cell_math(values["min_pressure"])
+
+                filtered_pressure_above_20N, filtered_thrust_above_20N, filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N = math.calculations()
+
+                graph = testing_UI()
+                graph.plots(filtered_pressure_above_20N, filtered_thrust_above_20N, 
                        filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N)
+                
+                
+            except Exception as e:
+                print(f"Basic error:\n {e} \n")
+                print("Advanced error log: ")
+                traceback.print_exc()
+                QMessageBox.information(window, "Error", "Failed Calculations & Graphing.")
 
-            
-    except Exception as e:
-      traceback.print_exc()
-      messagebox.showerror("Error","Failed Calculations & Graphing")
+        app = QApplication(sys.argv)
+        
+        #Create window
+        window = QWidget()
+        window.resize(100,100)
+        window.setWindowTitle("Import values")
 
-    root.destroy()
-    
-  tk.Button(root, text="Import Values", command=run).grid(row=4, column=0, columnspan=2, pady=20)
+        layout = QFormLayout()
 
-  root.mainloop()
-  
-  tk.Button(root, text="Save & Run", command=run).grid(row=4, column=0, columnspan=2, pady=20)
-    
-  root.mainloop()
+        #Create inputs
+        #lower_thrust_label = QLabel("Lower Thrust: ")
+        #lower_thrust_input = QLineEdit()
 
-if __name__ == "__main__":
-  main()
+        min_pressure_label = QLabel("Min Pressure (filter points w/ pressure below this, recommend 10psi): ")
+        min_pressure_input = QLineEdit()
+
+        #maxthrust_precent_label = QLabel("Max Thrust %: ")
+        #maxthrust_precent_input = QLineEdit()
+
+        #spacing_label = QLabel("Spacing: ")
+        #spacing_input = QLineEdit()
+
+        #Make inputs visible
+        #layout.addRow(lower_thrust_label, lower_thrust_input)
+        layout.addRow(min_pressure_label, min_pressure_input)
+        #layout.addRow(maxthrust_precent_label, maxthrust_precent_input)
+        #layout.addRow(spacing_label, spacing_input)
+
+        #Add submit values button
+        button_layout = QHBoxLayout()
+        submit_button = QPushButton('Submit')
+        submit_button.clicked.connect(submit)
+        button_layout.addWidget(submit_button)
+
+        #make entire UI visible
+        main_layout = QVBoxLayout()
+        main_layout.addLayout(layout)
+        main_layout.addLayout(button_layout)
+
+        window.setLayout(main_layout)
+
+        window.show()
+
+        sys.exit(app.exec())
+
+    if __name__ == "__main__":
+        main()

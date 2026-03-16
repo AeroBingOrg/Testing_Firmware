@@ -2,6 +2,7 @@ from LoadCellMath_old import Load_cell_math
 from LoadCellGraph import testing_UI
 import tkinter as tk
 from tkinter import messagebox
+import traceback
 import os
   
 def main():
@@ -36,17 +37,19 @@ def main():
       'upperthrust': upperthrust.get(),
       'maxthrust_precent': maxthrust_precent.get(),
       'spacing': spacing.get()
-      }
+    }
 
-    try: #this is the reason it's breaking, accessing the columns is crashing the ui 
-      '''math = Load_cell_math(values['lowerthrust'], values["upperthrust"], values["maxthrust_precent"], values["spacing"])
+    try:
+      math = Load_cell_math(values['lowerthrust'], values["upperthrust"], values["maxthrust_precent"], values["spacing"])
+
       filtered_pressure_above_20N, filtered_thrust_above_20N, filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N = math.calculations()
+
       testing_UI.plots(filtered_pressure_above_20N, filtered_thrust_above_20N, 
-                       filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N)'''
-      
-      
+                       filtered_time_above_20N, impulse, time_ms, end_A20N, start_A20N)
+
             
-    except:
+    except Exception as e:
+      traceback.print_exc()
       messagebox.showerror("Error","Failed Calculations & Graphing")
 
     root.destroy()
